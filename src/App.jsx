@@ -302,13 +302,12 @@ export default function App() {
         const hasKorean = korean.split('').some(c => fq.includes(c));
 
         // ① ㉮ 앞에서 줄바꿈 - 괄호 안 (㉮) 형태는 질문 텍스트이므로 제외
-        const split = fq
-          .replace(/\([㉮㉯㉰㉱㉲㉳㉴㉵]\)/g, m => '\x00' + m)
-          .replace(/([①②③④⑤㉮㉯㉰㉱㉲㉳㉴㉵])/g, '\n$1')
-          .replace(/\x00./g, s => s[1])
-          .split('\n')
-          .map(l => l.trim())
-          .filter(Boolean);
+        const phMap = {};
+        let phIdx = 0;
+        const fqSafe = fq.replace(/\([㉮㉯㉰㉱㉲㉳㉴㉵]\)/g, m => { const k = `__PH${phIdx++}__`; phMap[k] = m; return k; });
+        let fqSplit = fqSafe.replace(/([①②③④⑤㉮㉯㉰㉱㉲㉳㉴㉵])/g, '\n$1');
+        Object.entries(phMap).forEach(([k, v]) => { fqSplit = fqSplit.split(k).join(v); });
+        const split = fqSplit.split('\n').map(l => l.trim()).filter(Boolean);
 
         // '/' 기준으로 앞(①그룹)과 뒤(㉮그룹) 나누기
         const slashIdx = split.findIndex(l => l === '/');
