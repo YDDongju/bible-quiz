@@ -289,7 +289,7 @@ export default function App() {
         const text = fq.replace(/^빈칸(\([^)]*\))?:\s*/,'');
         const parts = text.split('___');
         return (
-          <div style={{ fontSize:16, lineHeight:2.2, color:'#dde2f0', textAlign:'justify', wordBreak:'keep-all' }}>
+          <div style={{ fontSize:16, lineHeight:2.2, color:'#dde2f0', wordBreak:'keep-all' }}>
             <span style={{ color:'#fff', marginRight:6 }}>▶</span>
             {parts.map((p,i) => <span key={i}>{p}{i<parts.length-1 && <span style={{ display:'inline-block', minWidth:64, height:26, background:`${typeBg}40`, borderRadius:6, margin:'0 4px', verticalAlign:'middle' }} />}</span>)}
           </div>
@@ -300,19 +300,19 @@ export default function App() {
         const choices = rest.join('\n').split('\n').filter(l => /^[①②③④⑤]/.test(l));
         return (
           <div>
-            <div style={{ fontSize:16, color:'#e0e3f5', lineHeight:1.85, marginBottom:14, textAlign:'justify', wordBreak:'keep-all' }}><span style={{ color:'#fff', marginRight:6 }}>▶</span>{qPart}</div>
+            <div style={{ fontSize:16, color:'#e0e3f5', lineHeight:1.85, marginBottom:14, wordBreak:'keep-all' }}><span style={{ color:'#fff', marginRight:6 }}>▶</span>{qPart}</div>
             <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
               {choices.map((line,i) => (
                 <div key={i} style={{ background:'#0b0b1e', border:'1px solid #1e1e38', borderRadius:10, padding:'9px 13px', display:'flex', gap:11, alignItems:'flex-start' }}>
                   <span style={{ color:'#fff', fontWeight:700, fontSize:15, flexShrink:0, marginTop:2 }}>{({'①':'1','②':'2','③':'3','④':'4','⑤':'5'})[line[0]]||line[0]}.</span>
-                  <span style={{ fontSize:15, color:'#d0d2e8', lineHeight:1.7, flex:1, textAlign:'justify', wordBreak:'keep-all' }}>{line.slice(1).trim()}</span>
+                  <span style={{ fontSize:15, color:'#d0d2e8', lineHeight:1.7, flex:1, wordBreak:'keep-all' }}>{line.slice(1).trim()}</span>
                 </div>
               ))}
             </div>
           </div>
         );
       }
-      return <div style={{ fontSize:16, color:'#e0e3f5', lineHeight:1.9, textAlign:'justify', wordBreak:'keep-all' }}><span style={{ color:'#fff', marginRight:6 }}>▶</span>{fq}</div>;
+      return <div style={{ fontSize:16, color:'#e0e3f5', lineHeight:1.9, wordBreak:'keep-all' }}><span style={{ color:'#fff', marginRight:6 }}>▶</span>{fq}</div>;
     };
 
     const renderBack = () => {
@@ -323,13 +323,13 @@ export default function App() {
             {parts.map((p,i) => (
               <div key={i} style={{ display:'flex', gap:12, alignItems:'center' }}>
                 <span style={{ background:'#10b98128', color:'#10b981', borderRadius:'50%', width:28, height:28, display:'flex', alignItems:'center', justifyContent:'center', fontSize:13, fontWeight:700, flexShrink:0 }}>{i+1}</span>
-                <span style={{ fontSize:17, color:'#b8ffe0', fontWeight:600, textAlign:'justify', wordBreak:'keep-all' }}>{p}</span>
+                <span style={{ fontSize:17, color:'#b8ffe0', fontWeight:600, wordBreak:'keep-all' }}>{p}</span>
               </div>
             ))}
           </div>
         );
       }
-      return <div style={{ fontSize:18, color:'#b8ffe0', fontWeight:600, lineHeight:1.9, whiteSpace:'pre-wrap', textAlign:'justify', wordBreak:'keep-all' }}>{card.a}</div>;
+      return <div style={{ fontSize:18, color:'#b8ffe0', fontWeight:600, lineHeight:1.9, whiteSpace:'pre-wrap', wordBreak:'keep-all' }}>{card.a}</div>;
     };
 
     if (showList) return (
@@ -419,7 +419,7 @@ export default function App() {
           <button onClick={() => setShowList(true)} style={{ background:'none', border:'none', fontSize:18, cursor:'pointer', padding:'4px 5px', color:'#666' }}>☰</button>
           <button onClick={() => toggleBm(card.id)} style={{ background:'none', border:'none', fontSize:20, cursor:'pointer', padding:'4px 5px' }}>{isBm?'⭐':'☆'}</button>
         </div>
-        <div style={{ height:80, flexShrink:0 }} />
+        <div style={{ height:160, flexShrink:0 }} />
       </div>
     );
   }
