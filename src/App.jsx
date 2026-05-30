@@ -296,8 +296,10 @@ export default function App() {
         );
       }
       if (isMC) {
-        const [qPart,...rest] = fq.split('\n\n');
-        const choices = rest.join('\n').split('\n').filter(l => /^[①②③④⑤]/.test(l));
+        // ①②③④⑤ 기호 앞에서 분리 (줄바꿈 없이 붙어있는 경우도 처리)
+        const split = fq.replace(/([①②③④⑤])/g, '\n$1').split('\n');
+        const qPart = split.filter(l => !/^[①②③④⑤]/.test(l)).join(' ').trim();
+        const choices = split.filter(l => /^[①②③④⑤]/.test(l));
         return (
           <div>
             <div style={{ fontSize:16, color:'#e0e3f5', lineHeight:1.85, marginBottom:14, wordBreak:'keep-all' }}><span style={{ color:'#fff', marginRight:6 }}>▶</span>{qPart}</div>
