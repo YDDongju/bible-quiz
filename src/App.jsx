@@ -248,7 +248,7 @@ export default function App() {
   const progress = queue.length > 0 ? Math.round((idx / queue.length) * 100) : 0;
 
   const S = {
-    app: { minHeight: '100vh', background: '#0f0f14', color: '#f0f0f5', fontFamily: 'system-ui,-apple-system,sans-serif', paddingBottom: 72, userSelect: 'none', WebkitUserSelect: 'none' },
+    app: { minHeight: '100vh', background: '#0f0f14', color: '#f0f0f5', fontFamily: 'system-ui,-apple-system,sans-serif', userSelect: 'none', WebkitUserSelect: 'none' },
     tag: (c) => ({ background: `${c}30`, color: c, borderRadius: 20, padding: '2px 10px', fontSize: 11, fontWeight: 600, display: 'inline-block' }),
     btn: (bg, txt) => ({ background: bg, color: txt, border: 'none', borderRadius: 12, padding: '12px 20px', fontSize: 15, fontWeight: 600, cursor: 'pointer' }),
     pill: (active) => ({ background: active ? '#6366f1' : '#1e1e2e', color: active ? '#fff' : '#888', border: `1px solid ${active ? '#6366f1' : '#2a2a3e'}`, borderRadius: 20, padding: '6px 14px', fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap' }),
@@ -356,13 +356,13 @@ export default function App() {
     );
 
     return (
-      <div style={{ ...S.app, height:'100dvh', overflow:'hidden', display:'flex', flexDirection:'column' }}>
+      <div style={{ ...S.app, height:'100dvh', minHeight:'unset', overflow:'hidden', display:'flex', flexDirection:'column' }}>
         {/* 제목 바 */}
         <div style={{ flexShrink:0, padding:'10px 16px', display:'flex', alignItems:'center', justifyContent:'space-between', borderBottom:'1px solid #1e1e2e' }}>
           <span style={{ fontSize:15, fontWeight:700, color:'#c0c0e0', letterSpacing:'-0.3px' }}>📖 KMC 성경문제집 퀴즈</span>
           <span style={{ fontSize:12, color:'#555', fontWeight:600 }}>{card.book} · {idx+1}/{queue.length}</span>
         </div>
-        <div style={{ flex:1, padding:'8px 12px 0', position:'relative', overflow:'hidden', display:'flex', flexDirection:'column', minHeight:0 }}
+        <div style={{ flex:1, padding:'8px 12px 16px', position:'relative', overflow:'hidden', display:'flex', flexDirection:'column', minHeight:0 }}
           onTouchStart={(e) => { swipeRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }; }}
           onTouchEnd={(e) => {
             const dx = e.changedTouches[0].clientX - swipeRef.current.x;
@@ -428,7 +428,7 @@ export default function App() {
   const toggleBook = (book) => setSelectedBooks(prev => prev.includes(book) ? prev.filter(b=>b!==book) : [...prev, book]);
 
   return (
-    <div style={S.app}>
+    <div style={{ ...S.app, paddingBottom:72 }}>
       <div style={{ padding:'20px 16px 12px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
         <div>
           <div style={{ fontSize:22, fontWeight:800, letterSpacing:'-0.5px' }}>📖 KMC 2025성경문제집</div>
