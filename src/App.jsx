@@ -351,6 +351,26 @@ export default function App() {
           </div>
         );
       }
+      // 큰따옴표 구절이 있으면 질문부와 구절부 분리
+      const verseMatch = fq.match(/^(.*?)([""].*[""])\s*(\([^)]+\))?\s*$/s);
+      if (verseMatch) {
+        const questionPart = verseMatch[1].trim();
+        const versePart = verseMatch[2].trim();
+        const refPart = verseMatch[3] || '';
+        return (
+          <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+            {questionPart && (
+              <div style={{ fontSize:16, color:'#e0e3f5', lineHeight:1.85, wordBreak:'keep-all' }}>
+                <span style={{ color:'#fff', marginRight:6 }}>▶</span>{questionPart}
+              </div>
+            )}
+            <div style={{ background:'#111827', border:'1px solid #2a3a52', borderLeft:'3px solid #6366f1', borderRadius:10, padding:'12px 14px' }}>
+              <div style={{ fontSize:15, color:'#c7d2fe', lineHeight:2, wordBreak:'keep-all', fontStyle:'italic' }}>{versePart}</div>
+              {refPart && <div style={{ fontSize:12, color:'#6366f1', marginTop:6, fontWeight:700 }}>{refPart}</div>}
+            </div>
+          </div>
+        );
+      }
       return <div style={{ fontSize:16, color:'#e0e3f5', lineHeight:1.9, wordBreak:'keep-all' }}><span style={{ color:'#fff', marginRight:6 }}>▶</span>{fq}</div>;
     };
 
@@ -395,7 +415,7 @@ export default function App() {
     );
 
     return (
-      <div style={{ ...S.app, height:'100dvh', minHeight:'unset', overflow:'hidden', touchAction:'none', display:'flex', flexDirection:'column' }}>
+      <div style={{ ...S.app, height:'100dvh', minHeight:'unset', overflow:'hidden', display:'flex', flexDirection:'column' }}>
         {/* 제목 바 */}
         <div style={{ flexShrink:0, padding:'10px 16px', display:'flex', alignItems:'center', justifyContent:'space-between', borderBottom:'1px solid #1e1e2e' }}>
           <span style={{ fontSize:15, fontWeight:700, color:'#c0c0e0', letterSpacing:'-0.3px' }}>📖 KMC 성경문제집 퀴즈</span>
