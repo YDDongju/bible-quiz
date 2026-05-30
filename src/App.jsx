@@ -301,9 +301,11 @@ export default function App() {
         const korean = '㉮㉯㉰㉱㉲㉳㉴㉵';
         const hasKorean = korean.split('').some(c => fq.includes(c));
 
-        // ① ㉮ 앞에서 모두 줄바꿈
+        // ① ㉮ 앞에서 줄바꿈 - 괄호 안 (㉮) 형태는 질문 텍스트이므로 제외
         const split = fq
+          .replace(/\([㉮㉯㉰㉱㉲㉳㉴㉵]\)/g, m => '\x00' + m)
           .replace(/([①②③④⑤㉮㉯㉰㉱㉲㉳㉴㉵])/g, '\n$1')
+          .replace(/\x00./g, s => s[1])
           .split('\n')
           .map(l => l.trim())
           .filter(Boolean);
