@@ -278,8 +278,8 @@ export default function App() {
     if (!card) return null;
     const bc = getBookInfo(card.book).color;
     const isBm = bm[card.id];
-    const isFill = card.q.startsWith('빈칸');
     const isMC = /[①②③④⑤]/.test(card.q);
+    const isFill = card.q.startsWith('빈칸') && !isMC;
     const typeLabel = isFill ? '✏️ 빈칸' : isMC ? '📋 선택형' : '💬 단답형';
     const typeBg = isFill ? '#f59e0b' : isMC ? bc : '#10b981';
 
