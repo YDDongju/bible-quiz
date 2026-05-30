@@ -289,7 +289,7 @@ export default function App() {
         const text = fq.replace(/^빈칸(\([^)]*\))?:\s*/,'');
         const parts = text.split('___');
         return (
-          <div style={{ fontSize:16, lineHeight:2.2, color:'#dde2f0' }}>
+          <div style={{ fontSize:16, lineHeight:2.2, color:'#dde2f0', textAlign:'justify', wordBreak:'keep-all' }}>
             <span style={{ color:'#fff', marginRight:6 }}>▶</span>
             {parts.map((p,i) => <span key={i}>{p}{i<parts.length-1 && <span style={{ display:'inline-block', minWidth:64, height:26, background:`${typeBg}40`, borderRadius:6, margin:'0 4px', verticalAlign:'middle' }} />}</span>)}
           </div>
@@ -300,19 +300,19 @@ export default function App() {
         const choices = rest.join('\n').split('\n').filter(l => /^[①②③④⑤]/.test(l));
         return (
           <div>
-            <div style={{ fontSize:16, color:'#e0e3f5', lineHeight:1.85, marginBottom:14 }}><span style={{ color:'#fff', marginRight:6 }}>▶</span>{qPart}</div>
+            <div style={{ fontSize:16, color:'#e0e3f5', lineHeight:1.85, marginBottom:14, textAlign:'justify', wordBreak:'keep-all' }}><span style={{ color:'#fff', marginRight:6 }}>▶</span>{qPart}</div>
             <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
               {choices.map((line,i) => (
                 <div key={i} style={{ background:'#0b0b1e', border:'1px solid #1e1e38', borderRadius:10, padding:'9px 13px', display:'flex', gap:11, alignItems:'flex-start' }}>
                   <span style={{ color:'#fff', fontWeight:700, fontSize:15, flexShrink:0, marginTop:2 }}>{({'①':'1','②':'2','③':'3','④':'4','⑤':'5'})[line[0]]||line[0]}.</span>
-                  <span style={{ fontSize:15, color:'#d0d2e8', lineHeight:1.7, flex:1 }}>{line.slice(1).trim()}</span>
+                  <span style={{ fontSize:15, color:'#d0d2e8', lineHeight:1.7, flex:1, textAlign:'justify', wordBreak:'keep-all' }}>{line.slice(1).trim()}</span>
                 </div>
               ))}
             </div>
           </div>
         );
       }
-      return <div style={{ fontSize:16, color:'#e0e3f5', lineHeight:1.9 }}><span style={{ color:'#fff', marginRight:6 }}>▶</span>{fq}</div>;
+      return <div style={{ fontSize:16, color:'#e0e3f5', lineHeight:1.9, textAlign:'justify', wordBreak:'keep-all' }}><span style={{ color:'#fff', marginRight:6 }}>▶</span>{fq}</div>;
     };
 
     const renderBack = () => {
@@ -323,13 +323,13 @@ export default function App() {
             {parts.map((p,i) => (
               <div key={i} style={{ display:'flex', gap:12, alignItems:'center' }}>
                 <span style={{ background:'#10b98128', color:'#10b981', borderRadius:'50%', width:28, height:28, display:'flex', alignItems:'center', justifyContent:'center', fontSize:13, fontWeight:700, flexShrink:0 }}>{i+1}</span>
-                <span style={{ fontSize:17, color:'#b8ffe0', fontWeight:600 }}>{p}</span>
+                <span style={{ fontSize:17, color:'#b8ffe0', fontWeight:600, textAlign:'justify', wordBreak:'keep-all' }}>{p}</span>
               </div>
             ))}
           </div>
         );
       }
-      return <div style={{ fontSize:18, color:'#b8ffe0', fontWeight:600, lineHeight:1.9, whiteSpace:'pre-wrap' }}>{card.a}</div>;
+      return <div style={{ fontSize:18, color:'#b8ffe0', fontWeight:600, lineHeight:1.9, whiteSpace:'pre-wrap', textAlign:'justify', wordBreak:'keep-all' }}>{card.a}</div>;
     };
 
     if (showList) return (
@@ -356,8 +356,13 @@ export default function App() {
     );
 
     return (
-      <div style={S.app}>
-        <div style={{ padding:'12px 16px 0', position:'relative', overflow:'hidden' }}
+      <div style={{ ...S.app, height:'100dvh', overflow:'hidden', display:'flex', flexDirection:'column' }}>
+        {/* 제목 바 */}
+        <div style={{ flexShrink:0, padding:'10px 16px', display:'flex', alignItems:'center', justifyContent:'space-between', borderBottom:'1px solid #1e1e2e' }}>
+          <span style={{ fontSize:15, fontWeight:700, color:'#c0c0e0', letterSpacing:'-0.3px' }}>📖 KMC 성경문제집 퀴즈</span>
+          <span style={{ fontSize:12, color:'#555', fontWeight:600 }}>{card.book} · {idx+1}/{queue.length}</span>
+        </div>
+        <div style={{ flex:1, padding:'8px 12px 0', position:'relative', overflow:'hidden', display:'flex', flexDirection:'column', minHeight:0 }}
           onTouchStart={(e) => { swipeRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }; }}
           onTouchEnd={(e) => {
             const dx = e.changedTouches[0].clientX - swipeRef.current.x;
@@ -371,12 +376,12 @@ export default function App() {
             else if (x > w*0.72) nextQ();
             else setFlipped(f => !f);
           }}>
-          <div style={{ position:'absolute', inset:'12px 16px 0', display:'flex', pointerEvents:'none', zIndex:5, borderRadius:20, overflow:'hidden' }}>
+          <div style={{ position:'absolute', inset:'0 0 0 0', display:'flex', pointerEvents:'none', zIndex:5, borderRadius:20, overflow:'hidden' }}>
             <div style={{ width:'28%', background:'linear-gradient(to right, #ffffff08, transparent)', display:'flex', alignItems:'center', paddingLeft:10 }}><span style={{ color:'#ffffff18', fontSize:22 }}>‹</span></div>
             <div style={{ flex:1 }} />
             <div style={{ width:'28%', background:'linear-gradient(to left, #ffffff08, transparent)', display:'flex', alignItems:'center', justifyContent:'flex-end', paddingRight:10 }}><span style={{ color:'#ffffff18', fontSize:22 }}>›</span></div>
           </div>
-          <div style={{ height:420, userSelect:'none', touchAction:'pan-y', position:'relative', transform:slideAnim==='left'?'translateX(-110%)':slideAnim==='right'?'translateX(110%)':'translateX(0)', opacity:slideAnim?0:1, transition:slideAnim?'transform 0.2s ease-in, opacity 0.2s ease-in':'none' }}>
+          <div style={{ flex:1, minHeight:0, userSelect:'none', touchAction:'pan-x', position:'relative', transform:slideAnim==='left'?'translateX(-110%)':slideAnim==='right'?'translateX(110%)':'translateX(0)', opacity:slideAnim?0:1, transition:slideAnim?'transform 0.2s ease-in, opacity 0.2s ease-in':'none' }}>
             <div style={{ position:'absolute', inset:0, background:'linear-gradient(155deg,#181828 0%,#11111e 100%)', border:`1.5px solid ${bc}30`, borderRadius:20, padding:'18px 18px 14px', display:'flex', flexDirection:'column', opacity:flipped?0:1, transition:'opacity 0.15s', pointerEvents:flipped?'none':'auto' }}>
               <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:14, flexShrink:0 }}>
                 <span style={{ color:'#444', fontSize:11, fontWeight:600 }}>Q.{card.id}</span>
@@ -392,7 +397,7 @@ export default function App() {
             </div>
           </div>
         </div>
-        <div style={{ padding:'10px 16px 0', display:'flex', alignItems:'center', gap:6 }}>
+        <div style={{ padding:'6px 12px 2px', display:'flex', alignItems:'center', gap:6, flexShrink:0 }}>
           <button onClick={() => setView('home')} style={{ background:'#1e1e2e', border:'1px solid #2a2a3e', borderRadius:10, color:'#aaa', fontSize:13, fontWeight:700, cursor:'pointer', padding:'7px 14px', display:'flex', alignItems:'center', gap:5, flexShrink:0 }}>🏠 홈</button>
           <div style={{ flex:1, padding:'8px 0', cursor:'pointer', position:'relative', touchAction:'none', userSelect:'none' }}
             onPointerDown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); setDragIdx(getBarIdx(e.clientX)); }}
@@ -414,11 +419,7 @@ export default function App() {
           <button onClick={() => setShowList(true)} style={{ background:'none', border:'none', fontSize:18, cursor:'pointer', padding:'4px 5px', color:'#666' }}>☰</button>
           <button onClick={() => toggleBm(card.id)} style={{ background:'none', border:'none', fontSize:20, cursor:'pointer', padding:'4px 5px' }}>{isBm?'⭐':'☆'}</button>
         </div>
-        <div style={{ display:'flex', justifyContent:'center', alignItems:'center', gap:8, padding:'6px 0 8px' }}>
-          <span style={{ fontSize:14, color:'#aaa', fontWeight:600 }}>{idx+1}</span>
-          <span style={{ fontSize:12, color:'#555' }}>/ {queue.length}</span>
-          <span style={S.tag(bc)}>{card.book}</span>
-        </div>
+        <div style={{ height:6, flexShrink:0 }} />
       </div>
     );
   }
