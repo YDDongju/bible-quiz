@@ -296,21 +296,58 @@ export default function App() {
         );
       }
       if (isMC) {
-        // ①②③④⑤ 기호 앞에서 분리 (줄바꿈 없이 붙어있는 경우도 처리)
-        const split = fq.replace(/([①②③④⑤])/g, '\n$1').split('\n');
-        const qPart = split.filter(l => !/^[①②③④⑤]/.test(l)).join(' ').trim();
-        const choices = split.filter(l => /^[①②③④⑤]/.test(l));
+        // ①②③④⑤ 기호 앞에서 분리
+        const circled = '①②③④⑤';
+        const korean = '㉮㉯㉰㉱㉲㉳㉴㉵';
+        const hasKorean = korean.split('').some(c => fq.includes(c));
+
+        // ① ㉮ 앞에서 모두 줄바꿈
+        const split = fq
+          .replace(/([①②③④⑤㉮㉯㉰㉱㉲㉳㉴㉵])/g, '\n$1')
+          .split('\n')
+          .map(l => l.trim())
+          .filter(Boolean);
+
+        // '/' 기준으로 앞(①그룹)과 뒤(㉮그룹) 나누기
+        const slashIdx = split.findIndex(l => l === '/');
+        let allLines = slashIdx >= 0
+          ? split.filter((_, i) => i !== slashIdx)
+          : split;
+
+        const qLines = allLines.filter(l => !/^[①②③④⑤㉮㉯㉰㉱㉲㉳㉴㉵]/.test(l));
+        const choicesA = allLines.filter(l => /^[①②③④⑤]/.test(l));
+        const choicesB = allLines.filter(l => /^[㉮㉯㉰㉱㉲㉳㉴㉵]/.test(l));
+        const qPart = qLines.join(' ').trim();
+
+        const koreanLabel = {'㉮':'㉮','㉯':'㉯','㉰':'㉰','㉱':'㉱','㉲':'㉲','㉳':'㉳','㉴':'㉴','㉵':'㉵'};
+
         return (
           <div>
-            <div style={{ fontSize:16, color:'#e0e3f5', lineHeight:1.85, marginBottom:14, wordBreak:'keep-all' }}><span style={{ color:'#fff', marginRight:6 }}>▶</span>{qPart}</div>
+            <div style={{ fontSize:16, color:'#e0e3f5', lineHeight:1.85, marginBottom:14, wordBreak:'keep-all' }}>
+              <span style={{ color:'#fff', marginRight:6 }}>▶</span>{qPart}
+            </div>
             <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-              {choices.map((line,i) => (
+              {choicesA.map((line,i) => (
                 <div key={i} style={{ background:'#0b0b1e', border:'1px solid #1e1e38', borderRadius:10, padding:'9px 13px', display:'flex', gap:11, alignItems:'flex-start' }}>
-                  <span style={{ color:'#fff', fontWeight:700, fontSize:15, flexShrink:0, marginTop:2 }}>{({'①':'1','②':'2','③':'3','④':'4','⑤':'5'})[line[0]]||line[0]}.</span>
+                  <span style={{ color:'#fff', fontWeight:700, fontSize:15, flexShrink:0, marginTop:2 }}>
+                    {({'①':'1','②':'2','③':'3','④':'4','⑤':'5'})[line[0]]||line[0]}.
+                  </span>
                   <span style={{ fontSize:15, color:'#d0d2e8', lineHeight:1.7, flex:1, wordBreak:'keep-all' }}>{line.slice(1).trim()}</span>
                 </div>
               ))}
             </div>
+            {choicesB.length > 0 && (
+              <div style={{ marginTop:10, display:'flex', flexDirection:'column', gap:8 }}>
+                {choicesB.map((line,i) => (
+                  <div key={i} style={{ background:'#0d1a2e', border:'1px solid #1e3050', borderRadius:10, padding:'9px 13px', display:'flex', gap:11, alignItems:'flex-start' }}>
+                    <span style={{ color:'#60a5fa', fontWeight:700, fontSize:15, flexShrink:0, marginTop:2 }}>
+                      {line[0]}
+                    </span>
+                    <span style={{ fontSize:15, color:'#93c5fd', lineHeight:1.7, flex:1, wordBreak:'keep-all' }}>{line.slice(1).trim()}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         );
       }
