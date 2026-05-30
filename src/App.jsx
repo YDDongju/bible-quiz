@@ -356,13 +356,13 @@ export default function App() {
     );
 
     return (
-      <div style={{ ...S.app, height:'100dvh', minHeight:'unset', overflow:'hidden', display:'flex', flexDirection:'column' }}>
+      <div style={{ ...S.app, height:'100dvh', minHeight:'unset', overflow:'hidden', touchAction:'none', display:'flex', flexDirection:'column' }}>
         {/* 제목 바 */}
         <div style={{ flexShrink:0, padding:'10px 16px', display:'flex', alignItems:'center', justifyContent:'space-between', borderBottom:'1px solid #1e1e2e' }}>
           <span style={{ fontSize:15, fontWeight:700, color:'#c0c0e0', letterSpacing:'-0.3px' }}>📖 KMC 성경문제집 퀴즈</span>
           <span style={{ fontSize:12, color:'#555', fontWeight:600 }}>{card.book} · {idx+1}/{queue.length}</span>
         </div>
-        <div style={{ flex:1, padding:'8px 12px 16px', position:'relative', overflow:'hidden', display:'flex', flexDirection:'column', minHeight:0 }}
+        <div style={{ flex:1, padding:'8px 12px 0', position:'relative', overflow:'hidden', display:'flex', flexDirection:'column', minHeight:0 }}
           onTouchStart={(e) => { swipeRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }; }}
           onTouchEnd={(e) => {
             const dx = e.changedTouches[0].clientX - swipeRef.current.x;
@@ -419,7 +419,7 @@ export default function App() {
           <button onClick={() => setShowList(true)} style={{ background:'none', border:'none', fontSize:18, cursor:'pointer', padding:'4px 5px', color:'#666' }}>☰</button>
           <button onClick={() => toggleBm(card.id)} style={{ background:'none', border:'none', fontSize:20, cursor:'pointer', padding:'4px 5px' }}>{isBm?'⭐':'☆'}</button>
         </div>
-        <div style={{ height:6, flexShrink:0 }} />
+        <div style={{ height:80, flexShrink:0 }} />
       </div>
     );
   }
