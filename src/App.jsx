@@ -134,10 +134,17 @@ async function notionSave(section, data) {
 
 async function loadQ() {
   // Notion에서 먼저 시도
-  const notion = await notionLoad('questions');
-  if (notion && Array.isArray(notion)) return notion;
-  // fallback: localStorage
-  try { const v = localStorage.getItem(SK.QUESTIONS); return v ? JSON.parse(v) : []; } catch(e) { return []; }
+  const initMap = new Map(INITIAL_QUESTIONS.map(q => [q.id, q]));
+  let stored = [];
+  try {
+    const notion = await notionLoad('questions');
+    if (notion && Array.isArray(notion)) stored = notion;
+    else { const v = localStorage.getItem(SK.QUESTIONS); if (v) stored = JSON.parse(v); }
+  } catch(e) {}
+  if (stored.length === 0) return [];
+  const patched = stored.map(q => initMap.has(q.id) ? initMap.get(q.id) : q);
+  try { localStorage.setItem(SK.QUESTIONS, JSON.stringify(patched)); } catch(e) {}
+  return patched;
 }
 async function saveQ(qs) {
   try {
